@@ -59,8 +59,8 @@ export const cars: Car[] = [
       'The Nexara Zenith is our statement of intent — a full-size luxury sedan that pairs a 380 HP twin-turbo hybrid drivetrain with an interior that rivals first-class air travel. Every surface is finished in hand-stitched Nappa leather or open-pore walnut, while a 22-speaker Meridian sound system fills the cabin with concert-hall clarity. ADAS Level 2+ keeps you safe, and the air suspension keeps you comfortable on any surface.',
     gradient: ['#1a1a2e', '#16213e'],
     isFlagship: true,
-    image: '/cars/zenith.webp',
-    gallery: ['/cars/zenith-1.webp', '/cars/zenith-2.webp', '/cars/zenith-3.webp'],
+    image: '/cars/zenith.png',
+    gallery: ['/cars/zenith-1.png', '/cars/zenith-2.png', '/cars/zenith-3.png'],
   },
 
   {
@@ -114,8 +114,8 @@ export const cars: Car[] = [
       'The Nexara Titan is built for families who refuse to compromise. Its 320 HP turbo-diesel engine delivers effortless highway cruising and serious off-road torque, while the Terrain Response system adapts to any surface. Inside, three rows of seating — including second-row captain chairs — ensure every passenger arrives relaxed, and the 680 L boot swallows luggage for any adventure.',
     gradient: ['#0f3460', '#1a1a2e'],
     isFlagship: false,
-    image: '/cars/titan.webp',
-    gallery: ['/cars/titan-1.webp', '/cars/titan-2.webp', '/cars/titan-3.webp'],
+    image: '/cars/titan.png',
+    gallery: ['/cars/titan-1.png', '/cars/titan-2.png', '/cars/titan-3.png'],
   },
 
   {
@@ -169,8 +169,8 @@ export const cars: Car[] = [
       'The Nexara Volt is engineered for the electric age. Twin motors deliver 580 Nm of instant torque through an intelligent AWD system, while the 78 kWh battery provides a real-world range of over 500 km. DC fast charging gets you back on the road in 35 minutes, and over-the-air updates mean your Volt gets better with every update. The panoramic glass roof floods the cabin with light, and the front trunk (frunk) adds 60 L of extra storage.',
     gradient: ['#00b4d8', '#023e8a'],
     isFlagship: false,
-    image: '/cars/volt.webp',
-    gallery: ['/cars/volt-1.webp', '/cars/volt-2.webp', '/cars/volt-3.webp'],
+    image: '/cars/volt.png',
+    gallery: ['/cars/volt-1.png', '/cars/volt-2.png', '/cars/volt-3.png'],
   },
 
   {
@@ -224,8 +224,8 @@ export const cars: Car[] = [
       'The Nexara Drift exists for one reason: the joy of driving. A 3.0L twin-turbo V6 sends 450 HP through a lightning-fast 7-speed dual-clutch gearbox to the rear wheels. Active aerodynamics adjust in real time, carbon ceramic brakes haul you down from any speed, and Track Mode transforms the Drift into a focused circuit weapon. The 2+2 cabin keeps it practical enough for weekend getaways, but make no mistake — this car was born at the apex.',
     gradient: ['#e63946', '#1d3557'],
     isFlagship: false,
-    image: '/cars/drift.webp',
-    gallery: ['/cars/drift-1.webp', '/cars/drift-2.webp', '/cars/drift-3.webp'],
+    image: '/cars/drift.png',
+    gallery: ['/cars/drift-1.png', '/cars/drift-2.png', '/cars/drift-3.png'],
   },
 
   {
@@ -279,8 +279,8 @@ export const cars: Car[] = [
       'The Nexara Evo proves that adventure doesn\'t need a premium price tag. Its 1.5L turbo engine is eager and efficient, the connected car suite keeps you in control from anywhere, and 5-star safety means the whole family rides with confidence. A panoramic sunroof, ventilated seats, and a crisp 10.25" touchscreen make the Evo feel like a car from a class above.',
     gradient: ['#2d6a4f', '#1b4332'],
     isFlagship: false,
-    image: '/cars/evo.webp',
-    gallery: ['/cars/evo-1.webp', '/cars/evo-2.webp', '/cars/evo-3.webp'],
+    image: '/cars/evo.png',
+    gallery: ['/cars/evo-1.png', '/cars/evo-2.png', '/cars/evo-3.png'],
   },
 
   {
@@ -334,8 +334,8 @@ export const cars: Car[] = [
       'The Nexara Pulse turns every commute into a small joy. Its peppy 1.2L turbo returns an impressive 22 km/l while still delivering enough punch for confident overtakes. Wireless CarPlay and Android Auto keep you connected, LED lighting gives it unmistakable road presence, and the tight turning circle makes city parking effortless. It\'s proof that your first NEXARA can still be a great NEXARA.',
     gradient: ['#ff6b6b', '#c44569'],
     isFlagship: false,
-    image: '/cars/pulse.webp',
-    gallery: ['/cars/pulse-1.webp', '/cars/pulse-2.webp', '/cars/pulse-3.webp'],
+    image: '/cars/pulse.png',
+    gallery: ['/cars/pulse-1.png', '/cars/pulse-2.png', '/cars/pulse-3.png'],
   },
 ];
 
