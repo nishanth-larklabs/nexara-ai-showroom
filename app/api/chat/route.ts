@@ -1,6 +1,6 @@
-import { groq } from '@ai-sdk/groq';
-import { streamText, tool, convertToModelMessages } from 'ai';
-import { z } from 'zod';
+import { groq } from "@ai-sdk/groq";
+import { streamText, tool, convertToModelMessages } from "ai";
+import { z } from "zod";
 
 export const maxDuration = 30;
 
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const modelMessages = await convertToModelMessages(messages);
 
   const result = streamText({
-    model: groq('llama-3.3-70b-versatile'),
+    model: groq("llama-3.3-70b-versatile"),
     messages: modelMessages,
     system: `You are the AI navigation assistant for NEXARA Motors, a premium electric vehicle dealership.
 Your job is to understand the user's intent and ALWAYS trigger the 'navigate_and_mutate' tool to scroll the page, change content appropriately, and provide a short, natural language reply.
@@ -25,32 +25,70 @@ You must handle at least the following intents:
 Never return a raw text response to the user. You MUST always call the navigate_and_mutate tool.`,
     tools: {
       navigate_and_mutate: tool({
-        description: 'Navigate the page and mutate content in response to a user query',
+        description:
+          "Navigate the page and mutate content in response to a user query",
         inputSchema: z.object({
           section: z.enum([
-            'hero',
-            'models',
-            'features',
-            'comparison',
-            'pricing',
-            'booking',
-            'contact'
-          ]).describe('The page section to scroll to'),
-          mutation: z.object({
-            type: z.enum([
-              'filter_models',
-              'compare_models',
-              'prefill_booking',
-              'highlight_model',
-              'change_currency',
-              'show_feature',
-              'reset'
-            ]),
-            payload: z.record(z.string(), z.any()).describe('Mutation-specific data (e.g. filters, model IDs, form values, currency)')
-          }),
-          reply: z.string().describe('Natural-language reply to show in the chat panel')
+            "hero",
+            "models",
+            "features",
+            "comparison",
+            "pricing",
+            "booking",
+            "contact",
+          ]),
+          reply: z
+            .string()
+            .describe("Natural-language reply to show in the chat panel"),
+          mutation: z.discriminatedUnion("type", [
+            z.object({
+              type: z.literal("filter_models"),
+              payload: z.object({
+                types: z.array(z.string()).optional(),
+                maxPrice: z.number().optional(),
+                minPrice: z.number().optional(),
+                fuelTypes: z.array(z.string()).optional(),
+                minSeating: z.number().optional(),
+              }),
+            }),
+            z.object({
+              type: z.literal("compare_models"),
+              payload: z.object({ modelIds: z.array(z.string()) }),
+            }),
+            z.object({
+              type: z.literal("prefill_booking"),
+              payload: z.object({
+                modelId: z.string().optional(),
+                city: z.string().optional(),
+                date: z.string().optional(),
+                name: z.string().optional(),
+                phone: z.string().optional(),
+                email: z.string().optional(),
+              }),
+            }),
+            z.object({
+              type: z.literal("highlight_model"),
+              payload: z.object({
+                modelId: z.string(),
+                reason: z.string().optional(),
+              }),
+            }),
+            z.object({
+              type: z.literal("change_currency"),
+              payload: z.object({
+                currency: z.enum(["INR", "USD", "EUR", "GBP"]),
+              }),
+            }),
+            z.object({
+              type: z.literal("show_feature"),
+              payload: z.object({ featureId: z.string() }),
+            }),
+            z.object({
+              type: z.literal("reset"),
+            }),
+          ]),
         }),
-      })
+      }),
     },
   });
 

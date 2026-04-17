@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { cars } from '@/data/cars';
-import { testDriveCities } from '@/data/brand';
-import { useAssistant } from '@/context/AssistantContext';
-import { Calendar, MapPin, Car as CarIcon, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { cars } from "@/data/cars";
+import { testDriveCities } from "@/data/brand";
+import { useAssistantStore } from "@/store/useAssistantStore";
+import { Calendar, MapPin, Car as CarIcon, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 type FormData = {
   fullName: string;
@@ -21,7 +21,7 @@ export default function BookingSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const { bookingPrefill } = useAssistant();
+  const bookingPrefill = useAssistantStore((state) => state.bookingPrefill);
 
   const {
     register,
@@ -31,15 +31,26 @@ export default function BookingSection() {
     formState: { errors },
   } = useForm<FormData>();
 
-  // Respond to AI pushing pre-fill data
+  // Respond to AI pushing pre-fill data with normalization
   useEffect(() => {
     if (bookingPrefill && Object.keys(bookingPrefill).length > 0) {
-       if (bookingPrefill.modelId) setValue('model', bookingPrefill.modelId);
-       if (bookingPrefill.city) setValue('city', bookingPrefill.city);
-       if (bookingPrefill.date) setValue('date', bookingPrefill.date);
-       if (bookingPrefill.name) setValue('fullName', bookingPrefill.name);
-       if (bookingPrefill.phone) setValue('phone', bookingPrefill.phone);
-       if (bookingPrefill.email) setValue('email', bookingPrefill.email);
+      // Normalize model ID to lowercase (e.g. 'Volt' -> 'volt')
+      if (bookingPrefill.modelId) {
+        setValue("model", bookingPrefill.modelId.toLowerCase());
+      }
+
+      // Normalize city capitalization to match the exact <option> value
+      if (bookingPrefill.city) {
+        const matchedCity = testDriveCities.find(
+          (city) => city.toLowerCase() === bookingPrefill.city.toLowerCase(),
+        );
+        if (matchedCity) setValue("city", matchedCity);
+      }
+
+      if (bookingPrefill.date) setValue("date", bookingPrefill.date);
+      if (bookingPrefill.name) setValue("fullName", bookingPrefill.name);
+      if (bookingPrefill.phone) setValue("phone", bookingPrefill.phone);
+      if (bookingPrefill.email) setValue("email", bookingPrefill.email);
     }
   }, [bookingPrefill, setValue]);
 
@@ -47,7 +58,7 @@ export default function BookingSection() {
     setIsSubmitting(true);
     // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log('Test drive booked:', data);
+    console.log("Test drive booked:", data);
     setIsSubmitting(false);
     setIsSuccess(true);
 
@@ -70,7 +81,8 @@ export default function BookingSection() {
               Book your Test Drive
             </h2>
             <p className="text-muted-foreground mb-10 leading-relaxed">
-              Feel the surge of instant torque, experience the comfort of the Lounge cabin, and let our ADAS level 2 guide your journey.
+              Feel the surge of instant torque, experience the comfort of the
+              Lounge cabin, and let our ADAS level 2 guide your journey.
             </p>
           </div>
           <div className="space-y-6">
@@ -78,19 +90,25 @@ export default function BookingSection() {
               <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:text-primary transition-colors">
                 <CarIcon size={18} />
               </div>
-              <span className="text-sm font-medium">Choose from 6 distinct models</span>
+              <span className="text-sm font-medium">
+                Choose from 6 distinct models
+              </span>
             </div>
             <div className="flex items-center gap-4 text-muted-foreground group">
               <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:text-primary transition-colors">
                 <MapPin size={18} />
               </div>
-              <span className="text-sm font-medium">Available in 10 major cities across India</span>
+              <span className="text-sm font-medium">
+                Available in 10 major cities across India
+              </span>
             </div>
             <div className="flex items-center gap-4 text-muted-foreground group">
               <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:text-primary transition-colors">
                 <Calendar size={18} />
               </div>
-              <span className="text-sm font-medium">Flexible slots based on your schedule</span>
+              <span className="text-sm font-medium">
+                Flexible slots based on your schedule
+              </span>
             </div>
           </div>
         </div>
@@ -109,9 +127,12 @@ export default function BookingSection() {
                 <div className="w-20 h-20 rounded-full bg-green-500/20 text-green-500 border border-green-500/30 flex items-center justify-center mb-6">
                   <CheckIcon className="w-10 h-10" />
                 </div>
-                <h3 className="text-3xl font-heading font-bold text-foreground mb-4">Request Received</h3>
+                <h3 className="text-3xl font-heading font-bold text-foreground mb-4">
+                  Request Received
+                </h3>
                 <p className="text-muted-foreground leading-relaxed max-w-sm text-balance">
-                  Your test drive has been requested. Our concierge team will contact you shortly to confirm the appointment.
+                  Your test drive has been requested. Our concierge team will
+                  contact you shortly to confirm the appointment.
                 </p>
               </motion.div>
             ) : (
@@ -122,39 +143,74 @@ export default function BookingSection() {
                 exit={{ opacity: 0 }}
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-6"
-                aria-label="Test drive booking form" 
+                aria-label="Test drive booking form"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="fullName" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Full Name</label>
+                    <label
+                      htmlFor="fullName"
+                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                    >
+                      Full Name
+                    </label>
                     <input
                       id="fullName"
                       placeholder="John Doe"
                       className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/30"
                       aria-invalid={errors.fullName ? "true" : "false"}
-                      aria-describedby={errors.fullName ? "fullName-error" : undefined}
-                      {...register('fullName', { required: 'Name is required' })}
+                      aria-describedby={
+                        errors.fullName ? "fullName-error" : undefined
+                      }
+                      {...register("fullName", {
+                        required: "Name is required",
+                      })}
                     />
-                    {errors.fullName && <span id="fullName-error" className="text-red-400 text-xs mt-1">{errors.fullName.message}</span>}
+                    {errors.fullName && (
+                      <span
+                        id="fullName-error"
+                        className="text-red-400 text-xs mt-1"
+                      >
+                        {errors.fullName.message}
+                      </span>
+                    )}
                   </div>
-                  
+
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="phone" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Phone</label>
+                    <label
+                      htmlFor="phone"
+                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                    >
+                      Phone
+                    </label>
                     <input
                       id="phone"
                       type="tel"
                       placeholder="+91 98765 43210"
                       className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/30"
                       aria-invalid={errors.phone ? "true" : "false"}
-                      aria-describedby={errors.phone ? "phone-error" : undefined}
-                      {...register('phone', { required: 'Phone is required' })}
+                      aria-describedby={
+                        errors.phone ? "phone-error" : undefined
+                      }
+                      {...register("phone", { required: "Phone is required" })}
                     />
-                    {errors.phone && <span id="phone-error" className="text-red-400 text-xs mt-1">{errors.phone.message}</span>}
+                    {errors.phone && (
+                      <span
+                        id="phone-error"
+                        className="text-red-400 text-xs mt-1"
+                      >
+                        {errors.phone.message}
+                      </span>
+                    )}
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="email" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Email</label>
+                  <label
+                    htmlFor="email"
+                    className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  >
+                    Email
+                  </label>
                   <input
                     id="email"
                     type="email"
@@ -162,59 +218,132 @@ export default function BookingSection() {
                     className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/30"
                     aria-invalid={errors.email ? "true" : "false"}
                     aria-describedby={errors.email ? "email-error" : undefined}
-                    {...register('email', { 
-                      required: 'Email is required',
-                      pattern: { value: /\S+@\S+\.\S+/, message: 'Invalid email address' }
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /\S+@\S+\.\S+/,
+                        message: "Invalid email address",
+                      },
                     })}
                   />
-                  {errors.email && <span id="email-error" className="text-red-400 text-xs mt-1">{errors.email.message}</span>}
+                  {errors.email && (
+                    <span
+                      id="email-error"
+                      className="text-red-400 text-xs mt-1"
+                    >
+                      {errors.email.message}
+                    </span>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="model" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Select Model</label>
+                    <label
+                      htmlFor="model"
+                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                    >
+                      Select Model
+                    </label>
                     <select
                       id="model"
                       className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
                       aria-invalid={errors.model ? "true" : "false"}
-                      aria-describedby={errors.model ? "model-error" : undefined}
-                      {...register('model', { required: 'Model is required' })}
+                      aria-describedby={
+                        errors.model ? "model-error" : undefined
+                      }
+                      {...register("model", { required: "Model is required" })}
                     >
-                      <option value="" disabled className="bg-background text-muted-foreground">Select a vehicle...</option>
-                      {cars.map(c => <option key={c.id} value={c.id} className="bg-background">{c.name}</option>)}
+                      <option
+                        value=""
+                        disabled
+                        className="bg-background text-muted-foreground"
+                      >
+                        Select a vehicle...
+                      </option>
+                      {cars.map((c) => (
+                        <option
+                          key={c.id}
+                          value={c.id}
+                          className="bg-background"
+                        >
+                          {c.name}
+                        </option>
+                      ))}
                     </select>
-                    {errors.model && <span id="model-error" className="text-red-400 text-xs mt-1">{errors.model.message}</span>}
+                    {errors.model && (
+                      <span
+                        id="model-error"
+                        className="text-red-400 text-xs mt-1"
+                      >
+                        {errors.model.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="city" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">City</label>
+                    <label
+                      htmlFor="city"
+                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                    >
+                      City
+                    </label>
                     <select
                       id="city"
                       className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
                       aria-invalid={errors.city ? "true" : "false"}
                       aria-describedby={errors.city ? "city-error" : undefined}
-                      {...register('city', { required: 'City is required' })}
+                      {...register("city", { required: "City is required" })}
                     >
-                      <option value="" disabled className="bg-background text-muted-foreground">Select your city...</option>
-                      {testDriveCities.map(city => <option key={city} value={city} className="bg-background">{city}</option>)}
+                      <option
+                        value=""
+                        disabled
+                        className="bg-background text-muted-foreground"
+                      >
+                        Select your city...
+                      </option>
+                      {testDriveCities.map((city) => (
+                        <option
+                          key={city}
+                          value={city}
+                          className="bg-background"
+                        >
+                          {city}
+                        </option>
+                      ))}
                     </select>
-                    {errors.city && <span id="city-error" className="text-red-400 text-xs mt-1">{errors.city.message}</span>}
+                    {errors.city && (
+                      <span
+                        id="city-error"
+                        className="text-red-400 text-xs mt-1"
+                      >
+                        {errors.city.message}
+                      </span>
+                    )}
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-2 mb-4">
-                  <label htmlFor="date" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Preferred Date</label>
+                  <label
+                    htmlFor="date"
+                    className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  >
+                    Preferred Date
+                  </label>
                   <input
                     id="date"
                     type="date"
-                    min={new Date().toISOString().split('T')[0]}
-                    className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer inline-block appearance-none min-h-[48px]"
+                    min={new Date().toISOString().split("T")[0]}
+                    className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer inline-block appearance-none min-h-12"
                     aria-invalid={errors.date ? "true" : "false"}
                     aria-describedby={errors.date ? "date-error" : undefined}
-                    {...register('date', { required: 'Date is required' })}
-                    style={{ colorScheme: 'dark' }}
+                    {...register("date", { required: "Date is required" })}
+                    style={{ colorScheme: "dark" }}
                   />
-                  {errors.date && <span id="date-error" className="text-red-400 text-xs mt-1">{errors.date.message}</span>}
+                  {errors.date && (
+                    <span id="date-error" className="text-red-400 text-xs mt-1">
+                      {errors.date.message}
+                    </span>
+                  )}
                 </div>
 
                 <button
@@ -228,7 +357,7 @@ export default function BookingSection() {
                       Processing Request...
                     </>
                   ) : (
-                    'Confirm Booking'
+                    "Confirm Booking"
                   )}
                 </button>
               </motion.form>
@@ -240,7 +369,7 @@ export default function BookingSection() {
   );
 }
 
-function CheckIcon(props: React.ComponentProps<'svg'>) {
+function CheckIcon(props: React.ComponentProps<"svg">) {
   return (
     <svg
       {...props}
@@ -252,7 +381,7 @@ function CheckIcon(props: React.ComponentProps<'svg'>) {
       <motion.path
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         strokeLinecap="round"
         strokeLinejoin="round"
         d="M5 13l4 4L19 7"

@@ -38,8 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-import Providers from '@/components/providers';
-import ChatPanel from '@/components/ui/ChatPanel';
+import ChatPanel from "@/components/ui/ChatPanel";
 
 export default function RootLayout({
   children,
@@ -52,12 +51,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Providers>
-          {children}
-          <ChatPanel />
-        </Providers>
+        {children}
+        <ChatPanel />
       </body>
     </html>
   );
 }
-

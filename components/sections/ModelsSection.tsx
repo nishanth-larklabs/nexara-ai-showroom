@@ -1,35 +1,48 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight } from 'lucide-react';
-import { cars } from '@/data/cars';
-import { formatPrice } from '@/data/currency';
-import { useAssistant } from '@/context/AssistantContext';
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ChevronRight } from "lucide-react";
+import { cars } from "@/data/cars";
+import { formatPrice } from "@/data/currency";
+import { useAssistantStore } from "@/store/useAssistantStore";
+import Image from "next/image";
 
-const categories = ['all', 'sedan', 'suv', 'electric', 'coupe', 'hatchback'];
+const categories = ["all", "sedan", "suv", "electric", "coupe", "hatchback"];
 
 export default function ModelsSection() {
-  const { modelFilters, highlightedModelId, targetCurrency } = useAssistant();
-  const [activeCategory, setActiveCategory] = useState('all');
+  const modelFilters = useAssistantStore((state) => state.modelFilters);
+  const highlightedModelId = useAssistantStore(
+    (state) => state.highlightedModelId,
+  );
+  const targetCurrency = useAssistantStore((state) => state.targetCurrency);
+
+  const [activeCategory, setActiveCategory] = useState("all");
 
   // Sync activeCategory if AI pushed a single type filter
   useEffect(() => {
     if (modelFilters.types && modelFilters.types.length === 1) {
-       setActiveCategory(modelFilters.types[0].toLowerCase());
+      setActiveCategory(modelFilters.types[0].toLowerCase());
     } else if (Object.keys(modelFilters).length === 0) {
-       setActiveCategory('all');
+      setActiveCategory("all");
     }
   }, [modelFilters]);
 
   const filteredCars = cars.filter((car) => {
-    if (activeCategory !== 'all' && car.type !== activeCategory) return false;
-    
-    if (modelFilters.maxPrice && car.priceINR > modelFilters.maxPrice) return false;
-    if (modelFilters.minPrice && car.priceINR < modelFilters.minPrice) return false;
-    if (modelFilters.fuelTypes && modelFilters.fuelTypes.length > 0 && !modelFilters.fuelTypes.includes(car.specs.fuelType)) return false;
-    if (modelFilters.minSeating && car.specs.seating < modelFilters.minSeating) return false;
+    if (activeCategory !== "all" && car.type !== activeCategory) return false;
+
+    if (modelFilters.maxPrice && car.priceINR > modelFilters.maxPrice)
+      return false;
+    if (modelFilters.minPrice && car.priceINR < modelFilters.minPrice)
+      return false;
+    if (
+      modelFilters.fuelTypes &&
+      modelFilters.fuelTypes.length > 0 &&
+      !modelFilters.fuelTypes.includes(car.specs.fuelType)
+    )
+      return false;
+    if (modelFilters.minSeating && car.specs.seating < modelFilters.minSeating)
+      return false;
 
     return true;
   });
@@ -55,8 +68,8 @@ export default function ModelsSection() {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 capitalize ${
                 activeCategory === cat
-                  ? 'bg-foreground text-background shadow-lg shadow-white/10'
-                  : 'bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground'
+                  ? "bg-foreground text-background shadow-lg shadow-white/10"
+                  : "bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
               }`}
             >
               {cat}
@@ -66,7 +79,10 @@ export default function ModelsSection() {
       </div>
 
       {/* Grid */}
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <motion.div
+        layout
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         <AnimatePresence mode="popLayout">
           {filteredCars.map((car) => (
             <motion.div
@@ -77,19 +93,17 @@ export default function ModelsSection() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
               className={`group relative rounded-3xl overflow-hidden glass border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col ${
-                highlightedModelId === car.id 
-                  ? 'border-primary ring-2 ring-primary/50 shadow-primary/20 scale-[1.02]' 
-                  : 'border-white/10 hover:border-white/20 hover:shadow-blue-500/10'
+                highlightedModelId === car.id
+                  ? "border-primary ring-2 ring-primary/50 shadow-primary/20 scale-[1.02]"
+                  : "border-white/10 hover:border-white/20 hover:shadow-blue-500/10"
               }`}
             >
               {/* Image Container */}
-              <div 
-                className="relative h-60 w-full overflow-hidden bg-gradient-to-b from-white/5 to-transparent"
-              >
-                <div 
+              <div className="relative h-60 w-full overflow-hidden bg-linear-to-b from-white/5 to-transparent">
+                <div
                   className="absolute inset-0 opacity-20 transition-opacity duration-500 group-hover:opacity-40"
                   style={{
-                    background: `linear-gradient(to top, ${car.gradient[0]}, transparent)`
+                    background: `linear-gradient(to top, ${car.gradient[0]}, transparent)`,
                   }}
                 />
                 <Image
@@ -120,25 +134,39 @@ export default function ModelsSection() {
                 {/* Specs Strip */}
                 <div className="grid grid-cols-3 gap-2 w-full mb-8">
                   <div className="flex flex-col">
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Power</span>
-                    <span className="text-sm font-semibold text-foreground">{car.specs.power}</span>
-                  </div>
-                  <div className="flex flex-col border-l border-white/10 pl-2">
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">0-100</span>
-                    <span className="text-sm font-semibold text-foreground">{car.specs.acceleration.split(' ')[0]}</span>
-                  </div>
-                  <div className="flex flex-col border-l border-white/10 pl-2">
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Range/Mil</span>
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                      Power
+                    </span>
                     <span className="text-sm font-semibold text-foreground">
-                      {car.type === 'electric' ? car.specs.mileage.split(' ')[0] + ' km' : car.specs.mileage}
+                      {car.specs.power}
+                    </span>
+                  </div>
+                  <div className="flex flex-col border-l border-white/10 pl-2">
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                      0-100
+                    </span>
+                    <span className="text-sm font-semibold text-foreground">
+                      {car.specs.acceleration.split(" ")[0]}
+                    </span>
+                  </div>
+                  <div className="flex flex-col border-l border-white/10 pl-2">
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                      Range/Mil
+                    </span>
+                    <span className="text-sm font-semibold text-foreground">
+                      {car.type === "electric"
+                        ? car.specs.mileage.split(" ")[0] + " km"
+                        : car.specs.mileage}
                     </span>
                   </div>
                 </div>
 
                 {/* Footer mapping layout */}
-                <div className="mt-auto w-full flex items-center justify-between pt-4 border-t border-white/10 h-[4rem]">
+                <div className="mt-auto w-full flex items-center justify-between pt-4 border-t border-white/10 h-16">
                   <div className="flex flex-col">
-                    <span className="text-xs text-muted-foreground mb-0.5">Starting at</span>
+                    <span className="text-xs text-muted-foreground mb-0.5">
+                      Starting at
+                    </span>
                     <span className="text-lg font-bold text-foreground">
                       <motion.span key={targetCurrency}>
                         {formatPrice(car.priceINR, targetCurrency)}
@@ -146,7 +174,10 @@ export default function ModelsSection() {
                     </span>
                   </div>
                   <button className="flex items-center justify-center p-3 rounded-xl bg-white/5 text-foreground hover:bg-white/10 transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                    <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight
+                      size={18}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
                   </button>
                 </div>
               </div>

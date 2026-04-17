@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { brandFeatures } from '@/data/features';
-import { useAssistant } from '@/context/AssistantContext';
-import * as Icons from 'lucide-react';
+import { motion, AnimatePresence } from "motion/react";
+import { brandFeatures } from "@/data/features";
+import { useAssistantStore } from "@/store/useAssistantStore";
+import * as Icons from "lucide-react";
 
 export default function FeaturesSection() {
-  const { activeFeatureId, setActiveFeatureId } = useAssistant();
+  const activeFeatureId = useAssistantStore((state) => state.activeFeatureId);
+  const setActiveFeatureId = useAssistantStore(
+    (state) => state.setActiveFeatureId,
+  );
 
-  const activeData = brandFeatures.find((f) => f.id === activeFeatureId) || brandFeatures[0];
+  const activeData =
+    brandFeatures.find((f) => f.id === activeFeatureId) || brandFeatures[0];
 
   // Dynamically render the selected icon
   const ActiveIcon = (Icons as any)[activeData.icon] || Icons.Code;
@@ -21,7 +24,8 @@ export default function FeaturesSection() {
           NEXARA Engineering
         </h2>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          Every vehicle is built on a foundation of uncompromising safety, boundary-pushing technology, and sustainable luxury.
+          Every vehicle is built on a foundation of uncompromising safety,
+          boundary-pushing technology, and sustainable luxury.
         </p>
       </div>
 
@@ -38,19 +42,23 @@ export default function FeaturesSection() {
                 onClick={() => setActiveFeatureId(feature.id)}
                 className={`group flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 text-left ${
                   isActive
-                    ? 'bg-primary/10 border border-primary/20 shadow-lg shadow-primary/5'
-                    : 'bg-white/5 border border-transparent hover:bg-white/10 hover:border-white/10'
+                    ? "bg-primary/10 border border-primary/20 shadow-lg shadow-primary/5"
+                    : "bg-white/5 border border-transparent hover:bg-white/10 hover:border-white/10"
                 }`}
               >
                 <div
                   className={`p-3 rounded-xl transition-colors ${
-                    isActive ? 'bg-primary text-primary-foreground' : 'bg-background text-muted-foreground group-hover:text-foreground'
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-background text-muted-foreground group-hover:text-foreground"
                   }`}
                 >
                   <Icon size={20} />
                 </div>
                 <div>
-                  <div className={`font-semibold text-base transition-colors ${isActive ? 'text-primary' : 'text-foreground'}`}>
+                  <div
+                    className={`font-semibold text-base transition-colors ${isActive ? "text-primary" : "text-foreground"}`}
+                  >
                     {feature.category}
                   </div>
                   <div className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
@@ -63,17 +71,17 @@ export default function FeaturesSection() {
         </div>
 
         {/* Content Display */}
-        <div className="lg:col-span-8 glass border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden min-h-[400px] flex flex-col justify-center">
+        <div className="lg:col-span-8 glass border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden min-h-100 flex flex-col justify-center">
           {/* Subtle radial background glow based on active feature */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
 
           <AnimatePresence mode="wait">
             <motion.div
               key={activeData.id}
-              initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="relative z-10"
             >
               <div className="flex items-center gap-4 mb-6">
@@ -84,21 +92,21 @@ export default function FeaturesSection() {
                   {activeData.title}
                 </h3>
               </div>
-              
+
               <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-2xl">
                 {activeData.description}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
                 {activeData.details.map((detail, idx) => (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 + idx * 0.05 }}
-                    key={idx} 
+                    key={idx}
                     className="flex items-start gap-3"
                   >
-                    <div className="mt-1 flex-shrink-0 text-primary">
+                    <div className="mt-1 shrink-0 text-primary">
                       <Icons.CheckCircle2 size={18} />
                     </div>
                     <span className="text-sm font-medium text-foreground/80 leading-snug">
