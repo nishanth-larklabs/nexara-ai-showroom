@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { cars } from '@/data/cars';
 import Image from 'next/image';
+import { useAssistant } from '@/context/AssistantContext';
 import { Check, Minus, DivideSquare } from 'lucide-react';
 
 type SpecKey = keyof typeof cars[0]['specs'];
@@ -22,8 +23,8 @@ const specLabels: Record<SpecKey, string> = {
 };
 
 export default function ComparisonSection() {
-  const [modelA, setModelA] = useState(cars[0].id);
-  const [modelB, setModelB] = useState(cars[2].id); // default to Zenit vs Volt
+  const { comparisonSelection, setComparisonSelection } = useAssistant();
+  const [modelA, modelB] = comparisonSelection;
 
   const carA = cars.find((c) => c.id === modelA)!;
   const carB = cars.find((c) => c.id === modelB)!;
@@ -53,7 +54,7 @@ export default function ComparisonSection() {
             </div>
             <select
               value={modelA}
-              onChange={(e) => setModelA(e.target.value)}
+              onChange={(e) => setComparisonSelection([e.target.value, modelB])}
               className="w-full bg-background border border-white/20 text-foreground text-sm rounded-xl py-2 px-3 outline-none focus:border-primary appearance-none text-center font-semibold uppercase tracking-wider"
             >
               {cars.map((c) => (
@@ -69,7 +70,7 @@ export default function ComparisonSection() {
             </div>
             <select
               value={modelB}
-              onChange={(e) => setModelB(e.target.value)}
+              onChange={(e) => setComparisonSelection([modelA, e.target.value])}
               className="w-full bg-background border border-white/20 text-foreground text-sm rounded-xl py-2 px-3 outline-none focus:border-primary appearance-none text-center font-semibold uppercase tracking-wider"
             >
               {cars.map((c) => (

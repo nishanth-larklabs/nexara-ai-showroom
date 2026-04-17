@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { cars } from '@/data/cars';
 import { testDriveCities } from '@/data/brand';
+import { useAssistant } from '@/context/AssistantContext';
 import { Calendar, MapPin, Car as CarIcon, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -20,12 +21,27 @@ export default function BookingSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const { bookingPrefill } = useAssistant();
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormData>();
+
+  // Respond to AI pushing pre-fill data
+  useEffect(() => {
+    if (bookingPrefill && Object.keys(bookingPrefill).length > 0) {
+       if (bookingPrefill.modelId) setValue('model', bookingPrefill.modelId);
+       if (bookingPrefill.city) setValue('city', bookingPrefill.city);
+       if (bookingPrefill.date) setValue('date', bookingPrefill.date);
+       if (bookingPrefill.name) setValue('fullName', bookingPrefill.name);
+       if (bookingPrefill.phone) setValue('phone', bookingPrefill.phone);
+       if (bookingPrefill.email) setValue('email', bookingPrefill.email);
+    }
+  }, [bookingPrefill, setValue]);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -106,7 +122,7 @@ export default function BookingSection() {
                 exit={{ opacity: 0 }}
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-6"
-                aria-label="Test drive booking form" // Ensure proper ARIA
+                aria-label="Test drive booking form" 
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
@@ -196,7 +212,7 @@ export default function BookingSection() {
                     aria-invalid={errors.date ? "true" : "false"}
                     aria-describedby={errors.date ? "date-error" : undefined}
                     {...register('date', { required: 'Date is required' })}
-                    style={{ colorScheme: 'dark' }} // to keep browser date picker icon visible on dark background
+                    style={{ colorScheme: 'dark' }}
                   />
                   {errors.date && <span id="date-error" className="text-red-400 text-xs mt-1">{errors.date.message}</span>}
                 </div>

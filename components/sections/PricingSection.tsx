@@ -6,8 +6,10 @@ import { cars } from '@/data/cars';
 import { availableCurrencies, currencyInfoMap, formatPrice, formatPriceLakh } from '@/data/currency';
 import type { Currency } from '@/types/car';
 
+import { useAssistant } from '@/context/AssistantContext';
+
 export default function PricingSection() {
-  const [currency, setCurrency] = useState<Currency>('INR');
+  const { targetCurrency, setTargetCurrency } = useAssistant();
 
   return (
     <section id="pricing" className="section-container relative z-10 py-24">
@@ -26,9 +28,9 @@ export default function PricingSection() {
           {availableCurrencies.map((c) => (
             <button
               key={c}
-              onClick={() => setCurrency(c)}
+              onClick={() => setTargetCurrency(c)}
               className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                currency === c
+                targetCurrency === c
                   ? 'bg-primary text-primary-foreground shadow-lg'
                   : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
               }`}
@@ -72,16 +74,15 @@ export default function PricingSection() {
                 <div className="mb-8">
                   <span className="text-sm text-muted-foreground block mb-2">Starting at</span>
                   <div className="text-4xl font-bold text-foreground tracking-tight flex items-baseline gap-2">
-                    {/* Animate price changes implicitly by using motion.div Key */}
                     <motion.span 
-                      key={currency + car.id}
+                      key={targetCurrency + car.id}
                       initial={{ opacity: 0, filter: 'blur(4px)' }}
                       animate={{ opacity: 1, filter: 'blur(0px)' }}
                     >
-                      {formatPrice(car.priceINR, currency)}
+                      {formatPrice(car.priceINR, targetCurrency)}
                     </motion.span>
                   </div>
-                  {currency === 'INR' && (
+                  {targetCurrency === 'INR' && (
                     <div className="text-sm text-muted-foreground mt-1 font-medium">
                       (or {formatPriceLakh(car.priceINR)})
                     </div>

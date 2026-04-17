@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { brandFeatures } from '@/data/features';
+import { useAssistant } from '@/context/AssistantContext';
 import * as Icons from 'lucide-react';
 
 export default function FeaturesSection() {
-  const [activeFeature, setActiveFeature] = useState(brandFeatures[0].id);
+  const { activeFeatureId, setActiveFeatureId } = useAssistant();
 
-  const activeData = brandFeatures.find((f) => f.id === activeFeature) || brandFeatures[0];
+  const activeData = brandFeatures.find((f) => f.id === activeFeatureId) || brandFeatures[0];
 
   // Dynamically render the selected icon
   const ActiveIcon = (Icons as any)[activeData.icon] || Icons.Code;
@@ -29,12 +30,12 @@ export default function FeaturesSection() {
         <div className="lg:col-span-4 flex flex-col gap-2">
           {brandFeatures.map((feature) => {
             const Icon = (Icons as any)[feature.icon] || Icons.Circle;
-            const isActive = feature.id === activeFeature;
+            const isActive = feature.id === activeFeatureId;
 
             return (
               <button
                 key={feature.id}
-                onClick={() => setActiveFeature(feature.id)}
+                onClick={() => setActiveFeatureId(feature.id)}
                 className={`group flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 text-left ${
                   isActive
                     ? 'bg-primary/10 border border-primary/20 shadow-lg shadow-primary/5'

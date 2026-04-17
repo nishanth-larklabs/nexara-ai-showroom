@@ -38,6 +38,9 @@ export const metadata: Metadata = {
   },
 };
 
+import Providers from '@/components/providers';
+import ChatPanel from '@/components/ui/ChatPanel';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,7 +51,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Providers>
+          {children}
+          <ChatPanel />
+        </Providers>
+      </body>
     </html>
   );
 }
+

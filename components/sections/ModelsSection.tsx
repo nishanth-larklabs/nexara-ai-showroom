@@ -1,20 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight } from 'lucide-react';
 import { cars } from '@/data/cars';
 import { formatPrice } from '@/data/currency';
+import { useAssistant } from '@/context/AssistantContext';
 import Image from 'next/image';
 
 const categories = ['all', 'sedan', 'suv', 'electric', 'coupe', 'hatchback'];
 
 export default function ModelsSection() {
+  const { modelFilters, highlightedModelId, targetCurrency } = useAssistant();
   const [activeCategory, setActiveCategory] = useState('all');
 
-  const filteredCars = cars.filter(
-    (car) => activeCategory === 'all' || car.type === activeCategory
-  );
+  // Sync activeCategory if AI pushed a single type filter
+  useEffect(() => {
+    if (modelFilters.types && modelFilters.types.length === 1) {
+       setActiveCategory(modelFilters.types[0].toLowerCase());
+    } else if (Object.keys(modelFilters).length === 0) {
+       setActiveCategory('all');
+    }
+  }, [modelFilters]);
+
+  const filteredCars = cars.filter((car) => {
+    if (activeCategory !== 'all' && car.type !== activeCategory) return false;
+    
+    if (modelFilters.maxPrice && car.priceINR > modelFilters.maxPrice) return false;
+    if (modelFilters.minPrice && car.priceINR < modelFilters.minPrice) return false;
+    if (modelFilters.fuelTypes && modelFilters.fuelTypes.length > 0 && !modelFilters.fuelTypes.includes(car.specs.fuelType)) return false;
+    if (modelFilters.minSeating && car.specs.seating < modelFilters.minSeating) return false;
+
+    return true;
+  });
 
   return (
     <section id="models" className="section-container relative z-10">
@@ -58,7 +76,11 @@ export default function ModelsSection() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3 }}
-              className="group relative rounded-3xl overflow-hidden glass border border-white/10 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 flex flex-col"
+              className={`group relative rounded-3xl overflow-hidden glass border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col ${
+                highlightedModelId === car.id 
+                  ? 'border-primary ring-2 ring-primary/50 shadow-primary/20 scale-[1.02]' 
+                  : 'border-white/10 hover:border-white/20 hover:shadow-blue-500/10'
+              }`}
             >
               {/* Image Container */}
               <div 
@@ -117,7 +139,11 @@ export default function ModelsSection() {
                 <div className="mt-auto w-full flex items-center justify-between pt-4 border-t border-white/10 h-[4rem]">
                   <div className="flex flex-col">
                     <span className="text-xs text-muted-foreground mb-0.5">Starting at</span>
-                    <span className="text-lg font-bold text-foreground">{formatPrice(car.priceINR, 'INR')}</span>
+                    <span className="text-lg font-bold text-foreground">
+                      <motion.span key={targetCurrency}>
+                        {formatPrice(car.priceINR, targetCurrency)}
+                      </motion.span>
+                    </span>
                   </div>
                   <button className="flex items-center justify-center p-3 rounded-xl bg-white/5 text-foreground hover:bg-white/10 transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
