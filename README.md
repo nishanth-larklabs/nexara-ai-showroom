@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NEXARA Motors
 
-## Getting Started
+A premium, AI-driven fictional electric vehicle dealership landing page. Nexara combines luxury styling with a powerful Agentic UI driven by `llama-3.3-70b-versatile`.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+*   **Fictional Data Layer:** 6 meticulously detailed car models with complex specs and feature lists.
+*   **Agentic UI (AI):** A persistent chat concierge built with Vercel AI SDK v6 that mutates the UI in real-time (filters models, drives the comparison engine, switches currency, and highlights features).
+*   **Glassmorphic Design:** A custom design system reflecting a high-end luxury vehicle brand.
+*   **Modern Stack:** Next.js App Router, Tailwind CSS, Motion (Framer Motion), Zustand/Context for global state, and Zod for rigid AI schema validation.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+2.  **Environment Variables:**
+    Create a `.env.local` file and add your Groq API key:
+    ```env
+    GROQ_API_KEY=your_groq_key_here
+    ```
+3.  **Run Dev Server:**
+    ```bash
+    npm run dev
+    ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧠 AI Capabilities 
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The `AssistantContext` intercepts LLM tool calls to execute 7 unique mutations:
+1.  `filter_models`: Dynamically filters car grid by type, fuel, price, and seating.
+2.  `compare_models`: Instructs the Comparison section to lock onto two valid car IDs.
+3.  `prefill_booking`: AI extracts details to pre-fill the Test Drive form.
+4.  `highlight_model`: Highlights a specific recommended car.
+5.  `change_currency`: Reactively switches the entire localized pricing UI (USD, EUR, GBP, INR, JPY).
+6.  `show_feature`: Switches the active tab in the Features section (e.g., safety, tech).
+7.  `reset`: Restores application to default state.

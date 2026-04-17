@@ -7,6 +7,7 @@ import ComparisonSection from '@/components/sections/ComparisonSection';
 import PricingSection from '@/components/sections/PricingSection';
 import BookingSection from '@/components/sections/BookingSection';
 import ContactSection from '@/components/sections/ContactSection';
+import Footer from '@/components/sections/Footer';
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
         <PricingSection />
         <BookingSection />
         <ContactSection />
+        <Footer />
       </main>
     </>
   );
