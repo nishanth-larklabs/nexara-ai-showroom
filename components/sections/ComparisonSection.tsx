@@ -30,8 +30,8 @@ export default function ComparisonSection() {
 
   const [modelA, modelB] = comparisonSelection;
 
-  const carA = cars.find((c) => c.id === modelA)!;
-  const carB = cars.find((c) => c.id === modelB)!;
+  const carA = cars.find((c) => c.id === modelA) || cars[0];
+  const carB = cars.find((c) => c.id === modelB) || cars[1];
 
   return (
     <section id="comparison" className="section-container relative z-10 py-24">

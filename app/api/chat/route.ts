@@ -7,7 +7,29 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  const modelMessages = await convertToModelMessages(messages);
+  const sanitizedMessages = messages.map((msg: any) => {
+    if (msg.role === "assistant" && msg.parts) {
+      const toolPart = msg.parts.find(
+        (p: any) =>
+          p.type === "tool-navigate_and_mutate" ||
+          p.type === "tool-call" ||
+          p.type === "tool-invocation",
+      );
+
+      if (toolPart) {
+        const payload = toolPart.args || toolPart.input;
+        return {
+          ...msg,
+          parts: [
+            { type: "text", text: payload?.reply || "Request processed." },
+          ],
+        };
+      }
+    }
+    return msg;
+  });
+
+  const modelMessages = await convertToModelMessages(sanitizedMessages);
 
   const result = streamText({
     model: groq("llama-3.3-70b-versatile"),
@@ -85,6 +107,7 @@ Never return a raw text response to the user. You MUST always call the navigate_
             }),
             z.object({
               type: z.literal("reset"),
+              payload: z.any().optional(),
             }),
           ]),
         }),

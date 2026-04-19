@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { AIMutation } from "@/types/ai";
 import type { Currency } from "@/types/car";
+import { carMap } from "@/data/cars";
 
 interface AssistantState {
   targetCurrency: Currency;
@@ -50,7 +51,17 @@ export const useAssistantStore = create<AssistantState>((set, get) => ({
       case "compare_models":
         if (mutation.payload && "modelIds" in mutation.payload) {
           const ids = mutation.payload.modelIds as string[];
-          if (ids.length >= 2) set({ comparisonSelection: [ids[0], ids[1]] });
+          if (ids.length >= 2) {
+            const idA = ids[0].toLowerCase();
+            const idB = ids[1].toLowerCase();
+
+            set((state) => ({
+              comparisonSelection: [
+                carMap.has(idA) ? idA : state.comparisonSelection[0],
+                carMap.has(idB) ? idB : state.comparisonSelection[1],
+              ],
+            }));
+          }
         }
         break;
       case "prefill_booking":
