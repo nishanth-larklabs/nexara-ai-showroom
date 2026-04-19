@@ -1,37 +1,37 @@
-# NEXARA Motors
+# DriveAI — NEXARA Motors
 
-A premium, AI-driven fictional electric vehicle dealership landing page. Nexara combines luxury styling with a powerful Agentic UI driven by `llama-3.3-70b-versatile`.
+NEXARA Motors is a fictional premium electric vehicle dealership featuring an AI assistant that actually controls the website. Instead of just chatting, the AI navigates the page, filters cars, updates pricing, and pre-fills forms based on what you ask it.
 
-## 🚀 Features
+## Setup Instructions
 
-*   **Fictional Data Layer:** 6 meticulously detailed car models with complex specs and feature lists.
-*   **Agentic UI (AI):** A persistent chat concierge built with Vercel AI SDK v6 that mutates the UI in real-time (filters models, drives the comparison engine, switches currency, and highlights features).
-*   **Glassmorphic Design:** A custom design system reflecting a high-end luxury vehicle brand.
-*   **Modern Stack:** Next.js App Router, Tailwind CSS, Motion (Framer Motion), Zustand/Context for global state, and Zod for rigid AI schema validation.
+If you want to run this project locally, follow these steps:
 
-## 🛠 Setup
+1. Clone this repository.
+2. Open your terminal and run `npm install` to install all dependencies.
+3. Create a `.env.local` file in the root folder.
+4. Add your Groq API key to the file like this: `GROQ_API_KEY=your_key_here`
+5. Run `npm run dev` and open `http://localhost:3000` in your browser.
 
-1.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
-2.  **Environment Variables:**
-    Create a `.env.local` file and add your Groq API key:
-    ```env
-    GROQ_API_KEY=your_groq_key_here
-    ```
-3.  **Run Dev Server:**
-    ```bash
-    npm run dev
-    ```
+## Tech Stack & Why I Chose It
 
-## 🧠 AI Capabilities 
+- **Next.js & React:** Used for the core framework. It makes building single-page scrolling applications really smooth.
+- **Tailwind CSS & Framer Motion:** Used for styling and animations. Framer Motion is great for smoothly re-arranging the car grid when the AI filters it.
+- **Zustand:** Picked for global state management. Because the AI chat panel needs to talk to completely different sections of the page (like the Pricing section or the Models grid), Zustand allowed me to update the UI instantly without messy prop-drilling.
+- **Vercel AI SDK & Groq (Llama 3):** Used for the AI integration. Groq is incredibly fast, which makes the AI feel like a snappy, real-time website controller rather than a slow chatbot.
 
-The `AssistantContext` intercepts LLM tool calls to execute 7 unique mutations:
-1.  `filter_models`: Dynamically filters car grid by type, fuel, price, and seating.
-2.  `compare_models`: Instructs the Comparison section to lock onto two valid car IDs.
-3.  `prefill_booking`: AI extracts details to pre-fill the Test Drive form.
-4.  `highlight_model`: Highlights a specific recommended car.
-5.  `change_currency`: Reactively switches the entire localized pricing UI (USD, EUR, GBP, INR, JPY).
-6.  `show_feature`: Switches the active tab in the Features section (e.g., safety, tech).
-7.  `reset`: Restores application to default state.
+## What the AI Can Do
+
+The assistant handles 6 distinct types of queries. Here are examples you can try:
+
+1. **Filter Models:** "Show me SUVs under 35 lakhs" or "I need a 7-seater."
+2. **Compare Cars:** "Compare the Volt and the Titan side by side."
+3. **Pre-fill Booking:** "I want to book a test drive for the Zenith in Bangalore next Monday. My name is Alex and my number is 9876543210."
+4. **Highlight Cars:** "What is your absolute cheapest car?"
+5. **Change Currency:** "Show me all the prices in US Dollars."
+6. **Show Features:** "Tell me about your safety features and cameras."
+
+_(You can also ask it to "clear filters" to reset the page!)_
+
+## What I Would Build Next
+
+If I had another week, I would build a voice system.
