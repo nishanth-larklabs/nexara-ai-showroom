@@ -69,44 +69,41 @@ export default function BookingSection() {
   };
 
   return (
-    <section id="booking" className="section-container relative z-10 py-24">
-      <div className="max-w-4xl mx-auto glass border border-white/10 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
-        {/* Subtle background glow */}
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
-
+    <section id="booking" className="py-32 px-6 bg-[#f3f3f3]">
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row bg-white rounded-[2rem] overflow-hidden border border-[#e5e5e5]">
         {/* Context panel */}
-        <div className="w-full md:w-5/12 bg-black/40 p-10 md:p-12 flex flex-col justify-between relative border-r border-white/5">
+        <div className="w-full lg:w-5/12 bg-[#1c1b1b] p-12 md:p-16 flex flex-col justify-between text-white">
           <div>
-            <h2 className="text-3xl font-heading font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6 tracking-tight">
               Book your Test Drive
             </h2>
-            <p className="text-muted-foreground mb-10 leading-relaxed">
+            <p className="text-[#f3f3f3]/70 mb-16 text-lg leading-relaxed font-medium">
               Feel the surge of instant torque, experience the comfort of the
               Lounge cabin, and let our ADAS level 2 guide your journey.
             </p>
           </div>
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 text-muted-foreground group">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:text-primary transition-colors">
-                <CarIcon size={18} />
+          <div className="space-y-8">
+            <div className="flex items-center gap-6 group">
+              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-[#1c1b1b]">
+                <CarIcon size={24} />
               </div>
-              <span className="text-sm font-medium">
+              <span className="text-base font-semibold tracking-wide">
                 Choose from 6 distinct models
               </span>
             </div>
-            <div className="flex items-center gap-4 text-muted-foreground group">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:text-primary transition-colors">
-                <MapPin size={18} />
+            <div className="flex items-center gap-6 group">
+              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-[#1c1b1b]">
+                <MapPin size={24} />
               </div>
-              <span className="text-sm font-medium">
-                Available in 10 major cities across India
+              <span className="text-base font-semibold tracking-wide">
+                Available in 10 major cities
               </span>
             </div>
-            <div className="flex items-center gap-4 text-muted-foreground group">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:text-primary transition-colors">
-                <Calendar size={18} />
+            <div className="flex items-center gap-6 group">
+              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center transition-colors group-hover:bg-white group-hover:text-[#1c1b1b]">
+                <Calendar size={24} />
               </div>
-              <span className="text-sm font-medium">
+              <span className="text-base font-semibold tracking-wide">
                 Flexible slots based on your schedule
               </span>
             </div>
@@ -114,7 +111,7 @@ export default function BookingSection() {
         </div>
 
         {/* Form Panel */}
-        <div className="w-full md:w-7/12 p-10 md:p-12 relative overflow-hidden">
+        <div className="w-full lg:w-7/12 p-12 md:p-16 relative bg-white">
           <AnimatePresence mode="wait">
             {isSuccess ? (
               <motion.div
@@ -122,15 +119,15 @@ export default function BookingSection() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center bg-black/60 backdrop-blur-md z-20"
+                className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center bg-white z-20"
               >
-                <div className="w-20 h-20 rounded-full bg-green-500/20 text-green-500 border border-green-500/30 flex items-center justify-center mb-6">
-                  <CheckIcon className="w-10 h-10" />
+                <div className="w-24 h-24 rounded-full bg-[#f3f3f3] text-[#1c1b1b] flex items-center justify-center mb-8">
+                  <CheckIcon className="w-12 h-12" />
                 </div>
-                <h3 className="text-3xl font-heading font-bold text-foreground mb-4">
+                <h3 className="text-4xl font-heading font-bold text-[#1c1b1b] mb-4 tracking-tight">
                   Request Received
                 </h3>
-                <p className="text-muted-foreground leading-relaxed max-w-sm text-balance">
+                <p className="text-[#474545] text-lg leading-relaxed max-w-sm font-medium">
                   Your test drive has been requested. Our concierge team will
                   contact you shortly to confirm the appointment.
                 </p>
@@ -142,21 +139,21 @@ export default function BookingSection() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-8"
                 aria-label="Test drive booking form"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-3">
                     <label
                       htmlFor="fullName"
-                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                      className="text-sm font-bold text-[#474545]"
                     >
                       Full Name
                     </label>
                     <input
                       id="fullName"
                       placeholder="John Doe"
-                      className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/30"
+                      className="bg-[#f3f3f3] rounded-full px-6 py-4 text-[#1c1b1b] font-medium focus:ring-2 focus:ring-[#1c1b1b] outline-none transition-all placeholder:text-[#474545]/50 border-none"
                       aria-invalid={errors.fullName ? "true" : "false"}
                       aria-describedby={
                         errors.fullName ? "fullName-error" : undefined
@@ -168,17 +165,17 @@ export default function BookingSection() {
                     {errors.fullName && (
                       <span
                         id="fullName-error"
-                        className="text-red-400 text-xs mt-1"
+                        className="text-red-500 text-sm mt-1 font-semibold ml-4"
                       >
                         {errors.fullName.message}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
                     <label
                       htmlFor="phone"
-                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                      className="text-sm font-bold text-[#474545]"
                     >
                       Phone
                     </label>
@@ -186,7 +183,7 @@ export default function BookingSection() {
                       id="phone"
                       type="tel"
                       placeholder="+91 98765 43210"
-                      className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/30"
+                      className="bg-[#f3f3f3] rounded-full px-6 py-4 text-[#1c1b1b] font-medium focus:ring-2 focus:ring-[#1c1b1b] outline-none transition-all placeholder:text-[#474545]/50 border-none"
                       aria-invalid={errors.phone ? "true" : "false"}
                       aria-describedby={
                         errors.phone ? "phone-error" : undefined
@@ -196,7 +193,7 @@ export default function BookingSection() {
                     {errors.phone && (
                       <span
                         id="phone-error"
-                        className="text-red-400 text-xs mt-1"
+                        className="text-red-500 text-sm mt-1 font-semibold ml-4"
                       >
                         {errors.phone.message}
                       </span>
@@ -204,10 +201,10 @@ export default function BookingSection() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                   <label
                     htmlFor="email"
-                    className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                    className="text-sm font-bold text-[#474545]"
                   >
                     Email
                   </label>
@@ -215,7 +212,7 @@ export default function BookingSection() {
                     id="email"
                     type="email"
                     placeholder="john@example.com"
-                    className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/30"
+                    className="bg-[#f3f3f3] rounded-full px-6 py-4 text-[#1c1b1b] font-medium focus:ring-2 focus:ring-[#1c1b1b] outline-none transition-all placeholder:text-[#474545]/50 border-none"
                     aria-invalid={errors.email ? "true" : "false"}
                     aria-describedby={errors.email ? "email-error" : undefined}
                     {...register("email", {
@@ -229,24 +226,24 @@ export default function BookingSection() {
                   {errors.email && (
                     <span
                       id="email-error"
-                      className="text-red-400 text-xs mt-1"
+                      className="text-red-500 text-sm mt-1 font-semibold ml-4"
                     >
                       {errors.email.message}
                     </span>
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-3">
                     <label
                       htmlFor="model"
-                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                      className="text-sm font-bold text-[#474545]"
                     >
                       Select Model
                     </label>
                     <select
                       id="model"
-                      className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
+                      className="bg-[#f3f3f3] rounded-full px-6 py-4 text-[#1c1b1b] font-medium focus:ring-2 focus:ring-[#1c1b1b] outline-none transition-all appearance-none border-none"
                       aria-invalid={errors.model ? "true" : "false"}
                       aria-describedby={
                         errors.model ? "model-error" : undefined
@@ -256,16 +253,12 @@ export default function BookingSection() {
                       <option
                         value=""
                         disabled
-                        className="bg-background text-muted-foreground"
+                        className="bg-white text-[#474545]"
                       >
                         Select a vehicle...
                       </option>
                       {cars.map((c) => (
-                        <option
-                          key={c.id}
-                          value={c.id}
-                          className="bg-background"
-                        >
+                        <option key={c.id} value={c.id} className="bg-white">
                           {c.name}
                         </option>
                       ))}
@@ -273,23 +266,23 @@ export default function BookingSection() {
                     {errors.model && (
                       <span
                         id="model-error"
-                        className="text-red-400 text-xs mt-1"
+                        className="text-red-500 text-sm mt-1 font-semibold ml-4"
                       >
                         {errors.model.message}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
                     <label
                       htmlFor="city"
-                      className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                      className="text-sm font-bold text-[#474545]"
                     >
                       City
                     </label>
                     <select
                       id="city"
-                      className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
+                      className="bg-[#f3f3f3] rounded-full px-6 py-4 text-[#1c1b1b] font-medium focus:ring-2 focus:ring-[#1c1b1b] outline-none transition-all appearance-none border-none"
                       aria-invalid={errors.city ? "true" : "false"}
                       aria-describedby={errors.city ? "city-error" : undefined}
                       {...register("city", { required: "City is required" })}
@@ -297,16 +290,12 @@ export default function BookingSection() {
                       <option
                         value=""
                         disabled
-                        className="bg-background text-muted-foreground"
+                        className="bg-white text-[#474545]"
                       >
                         Select your city...
                       </option>
                       {testDriveCities.map((city) => (
-                        <option
-                          key={city}
-                          value={city}
-                          className="bg-background"
-                        >
+                        <option key={city} value={city} className="bg-white">
                           {city}
                         </option>
                       ))}
@@ -314,7 +303,7 @@ export default function BookingSection() {
                     {errors.city && (
                       <span
                         id="city-error"
-                        className="text-red-400 text-xs mt-1"
+                        className="text-red-500 text-sm mt-1 font-semibold ml-4"
                       >
                         {errors.city.message}
                       </span>
@@ -322,10 +311,10 @@ export default function BookingSection() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2 mb-4">
+                <div className="flex flex-col gap-3 mb-6">
                   <label
                     htmlFor="date"
-                    className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                    className="text-sm font-bold text-[#474545]"
                   >
                     Preferred Date
                   </label>
@@ -333,14 +322,16 @@ export default function BookingSection() {
                     id="date"
                     type="date"
                     min={new Date().toISOString().split("T")[0]}
-                    className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer inline-block appearance-none min-h-12"
+                    className="bg-[#f3f3f3] rounded-full px-6 py-4 text-[#1c1b1b] font-medium focus:ring-2 focus:ring-[#1c1b1b] outline-none transition-all cursor-pointer inline-block appearance-none min-h-12 border-none"
                     aria-invalid={errors.date ? "true" : "false"}
                     aria-describedby={errors.date ? "date-error" : undefined}
                     {...register("date", { required: "Date is required" })}
-                    style={{ colorScheme: "dark" }}
                   />
                   {errors.date && (
-                    <span id="date-error" className="text-red-400 text-xs mt-1">
+                    <span
+                      id="date-error"
+                      className="text-red-500 text-sm mt-1 font-semibold ml-4"
+                    >
                       {errors.date.message}
                     </span>
                   )}
@@ -349,11 +340,11 @@ export default function BookingSection() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary text-primary-foreground py-4 rounded-xl font-bold hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-[#1c1b1b] text-white py-5 rounded-full font-bold text-lg hover:bg-[#333] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 size={20} className="animate-spin" />
+                      <Loader2 size={24} className="animate-spin" />
                       Processing Request...
                     </>
                   ) : (
@@ -376,7 +367,7 @@ function CheckIcon(props: React.ComponentProps<"svg">) {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      strokeWidth={2}
+      strokeWidth={3}
     >
       <motion.path
         initial={{ pathLength: 0 }}

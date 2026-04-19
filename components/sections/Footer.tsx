@@ -1,5 +1,5 @@
-import { ArrowUpRight, Camera, Globe, Mail, MessageCircle } from 'lucide-react';
-import { cars } from '@/data/cars';
+import { ArrowUpRight, Camera, Globe, Mail, MessageCircle } from "lucide-react";
+import { cars } from "@/data/cars";
 
 type LinkGroup = {
   title: string;
@@ -8,57 +8,52 @@ type LinkGroup = {
 
 const linkGroups: LinkGroup[] = [
   {
-    title: 'Vehicles',
+    title: "Vehicles",
     links: cars.map((m) => ({ label: m.name, href: `#models` })),
   },
   {
-    title: 'Company',
+    title: "Company",
     links: [
-      { label: 'About Us', href: '#' },
-      { label: 'Careers', href: '#' },
-      { label: 'Sustainability', href: '#' },
-      { label: 'Press', href: '#' },
+      { label: "About Us", href: "#" },
+      { label: "Careers", href: "#" },
+      { label: "Sustainability", href: "#" },
+      { label: "Press", href: "#" },
     ],
   },
   {
-    title: 'Legal',
+    title: "Legal",
     links: [
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
-      { label: 'Cookie Policy', href: '#' },
-      { label: 'Warranty Info', href: '#' },
+      { label: "Privacy Policy", href: "#" },
+      { label: "Terms of Service", href: "#" },
+      { label: "Cookie Policy", href: "#" },
+      { label: "Warranty Info", href: "#" },
     ],
   },
 ];
 
 const socialLinks = [
-  { icon: Camera, href: '#', label: 'Instagram' },
-  { icon: MessageCircle, href: '#', label: 'Twitter' },
-  { icon: Globe, href: '#', label: 'Web' },
-  { icon: Mail, href: '#', label: 'Contact' },
+  { icon: Camera, href: "#", label: "Instagram" },
+  { icon: MessageCircle, href: "#", label: "Twitter" },
+  { icon: Globe, href: "#", label: "Web" },
+  { icon: Mail, href: "#", label: "Contact" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="relative bg-background border-t border-white/5 pt-20 pb-10 overflow-hidden">
-      {/* Decorative Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-32 bg-primary/10 blur-[100px] pointer-events-none rounded-full" />
-
-      <div className="mx-auto max-w-7xl px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
-          
+    <footer className="bg-white border-t border-[#e5e5e5] pt-24 pb-12">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 lg:gap-12 mb-20">
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <a
               href="#hero"
-              className="inline-block text-2xl font-heading font-bold tracking-[0.2em] text-foreground hover:text-primary transition-colors mb-6"
+              className="inline-block text-3xl font-heading font-black tracking-[0.2em] text-[#1c1b1b] mb-8"
               aria-label="NEXARA Motors — return to top"
             >
               NEXARA
             </a>
-            <p className="text-muted-foreground mb-8 max-w-sm leading-relaxed">
-              Engineering the future of high-performance electric vehicles. 
+            <p className="text-[#474545] text-lg mb-10 max-w-sm leading-relaxed font-medium">
+              Engineering the future of high-performance electric vehicles.
               Precision, power, and design that moves you forward.
             </p>
             <div className="flex items-center gap-4">
@@ -68,10 +63,10 @@ export default function Footer() {
                   <a
                     key={i}
                     href={social.href}
-                    className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-white/20 hover:bg-white/5 transition-all"
+                    className="w-12 h-12 rounded-full bg-[#f3f3f3] flex items-center justify-center text-[#1c1b1b] hover:bg-[#1c1b1b] hover:text-white transition-colors"
                     aria-label={social.label}
                   >
-                    <Icon size={18} />
+                    <Icon size={20} />
                   </a>
                 );
               })}
@@ -81,18 +76,20 @@ export default function Footer() {
           {/* Links Columns */}
           {linkGroups.map((group, i) => (
             <div key={i}>
-              <h4 className="font-heading font-semibold text-foreground mb-6">{group.title}</h4>
-              <ul className="space-y-4">
+              <h4 className="font-bold text-[#1c1b1b] text-xl mb-8">
+                {group.title}
+              </h4>
+              <ul className="space-y-5">
                 {group.links.map((link, j) => (
                   <li key={j}>
                     <a
                       href={link.href}
-                      className="group flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="group flex items-center text-base font-semibold text-[#474545] hover:text-[#1c1b1b] transition-colors"
                     >
                       {link.label}
-                      <ArrowUpRight 
-                        size={12} 
-                        className="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-primary" 
+                      <ArrowUpRight
+                        size={16}
+                        className="ml-2 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-[#1c1b1b]"
                       />
                     </a>
                   </li>
@@ -103,14 +100,15 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
-          <p className="text-sm text-muted-foreground/60 text-center md:text-left">
-            &copy; {new Date().getFullYear()} NEXARA Motors Inc. All rights reserved. <br className="md:hidden" />
-            Designed for the future.
+        <div className="flex flex-col md:flex-row items-center justify-between pt-10 border-t border-[#e5e5e5] gap-6">
+          <p className="text-sm font-bold text-[#474545] text-center md:text-left tracking-wide">
+            &copy; {new Date().getFullYear()} NEXARA Motors Inc. All rights
+            reserved.
           </p>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm text-muted-foreground/60 font-medium tracking-wider uppercase text-xs">All Systems Operational</span>
+          <div className="flex items-center">
+            <span className="text-sm text-[#474545] font-bold tracking-widest uppercase">
+              All Systems Operational
+            </span>
           </div>
         </div>
       </div>

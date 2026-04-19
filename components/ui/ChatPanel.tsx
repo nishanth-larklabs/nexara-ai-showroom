@@ -105,29 +105,29 @@ export default function ChatPanel() {
               scale: 0.95,
               transition: { duration: 0.2 },
             }}
-            className="mb-4 w-95 sm:w-105 max-w-[calc(100vw-3rem)] h-150 max-h-[calc(100vh-8rem)] glass border border-white/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+            className="mb-4 w-95 sm:w-105 max-w-[calc(100vw-3rem)] h-150 max-h-[calc(100vh-8rem)] bg-white border border-[#e5e5e5] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="p-4 border-b border-white/10 bg-black/40 flex justify-between items-center shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center border border-primary/30">
+            <div className="p-6 border-b border-[#e5e5e5] bg-[#f3f3f3]/50 flex justify-between items-center shrink-0">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-white text-[#1c1b1b] flex items-center justify-center border border-[#e5e5e5] shadow-sm">
                   <Bot size={20} />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-foreground leading-tight">
+                  <h3 className="font-heading font-bold text-[#1c1b1b] text-lg tracking-tight">
                     NEXARA Concierge
                   </h3>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <p className="text-xs text-muted-foreground">
-                      AI Assistant Online
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <div className="w-2 h-2 rounded-full bg-[#1c1b1b]" />
+                    <p className="text-xs font-semibold text-[#474545] uppercase tracking-wider">
+                      Online
                     </p>
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 rounded-full hover:bg-white/10 text-muted-foreground hover:text-foreground transition-colors"
+                className="p-2 rounded-full hover:bg-black/5 text-[#474545] hover:text-[#1c1b1b] transition-colors"
                 aria-label="Close chat"
               >
                 <X size={20} />
@@ -135,16 +135,14 @@ export default function ChatPanel() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-6">
+            <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-white">
               {messages.length === 0 && (
-                <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 text-muted-foreground">
-                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+                <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-6 text-[#474545]">
+                  <div className="w-20 h-20 rounded-full bg-[#f3f3f3] flex items-center justify-center text-[#1c1b1b]">
                     <MessageSquareText size={32} />
                   </div>
-                  <p className="text-sm">
-                    How can I help you explore NEXARA today? Try asking to see
-                    cars under a budget, compare two models, or book a test
-                    drive.
+                  <p className="text-base font-medium leading-relaxed max-w-62.5">
+                    How can I help you explore NEXARA today?
                   </p>
                 </div>
               )}
@@ -156,13 +154,15 @@ export default function ChatPanel() {
                 if (!displayContent && !isLoading) return null;
 
                 return (
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     key={message.id}
                     className={`flex gap-3 ${isUser ? "flex-row-reverse" : "flex-row"}`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-full shrink-0 flex flex-col items-center justify-center -mt-1
-                      ${isUser ? "bg-white/10 text-foreground" : "bg-primary/20 text-primary border border-primary/30"}
+                      className={`w-8 h-8 rounded-full shrink-0 flex flex-col items-center justify-center mt-1
+                      ${isUser ? "bg-[#1c1b1b] text-white" : "bg-[#f3f3f3] border border-[#e5e5e5] text-[#1c1b1b]"}
                     `}
                     >
                       {isUser ? <User size={14} /> : <Bot size={14} />}
@@ -171,32 +171,38 @@ export default function ChatPanel() {
                       className={`flex flex-col gap-1 max-w-[80%] ${isUser ? "items-end" : "items-start"}`}
                     >
                       <div
-                        className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                        className={`px-5 py-4 text-[15px] leading-relaxed shadow-sm ${
                           isUser
-                            ? "bg-white/10 text-foreground rounded-tr-sm"
-                            : "bg-black/40 text-foreground border border-white/5 rounded-tl-sm"
+                            ? "bg-[#1c1b1b] text-white rounded-[1.5rem] rounded-tr-sm"
+                            : "bg-[#f3f3f3] text-[#1c1b1b] rounded-[1.5rem] rounded-tl-sm"
                         }`}
                       >
                         {displayContent || (
-                          <span className="animate-pulse flex items-center h-4">
-                            <span className="w-2 h-2 bg-primary rounded-full mr-1.5"></span>
-                            <span className="w-2 h-2 bg-primary rounded-full mr-1.5"></span>
-                            <span className="w-2 h-2 bg-primary rounded-full"></span>
+                          <span className="flex items-center h-4 gap-1">
+                            <span className="w-1.5 h-1.5 bg-[#1c1b1b]/40 rounded-full animate-bounce"></span>
+                            <span
+                              className="w-1.5 h-1.5 bg-[#1c1b1b]/40 rounded-full animate-bounce"
+                              style={{ animationDelay: "0.15s" }}
+                            ></span>
+                            <span
+                              className="w-1.5 h-1.5 bg-[#1c1b1b]/40 rounded-full animate-bounce"
+                              style={{ animationDelay: "0.3s" }}
+                            ></span>
                           </span>
                         )}
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
 
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex gap-3 flex-row">
-                  <div className="w-8 h-8 rounded-full shrink-0 flex flex-col items-center justify-center -mt-1 bg-primary/20 text-primary border border-primary/30">
+                  <div className="w-8 h-8 rounded-full shrink-0 flex flex-col items-center justify-center mt-1 bg-[#f3f3f3] border border-[#e5e5e5] text-[#1c1b1b]">
                     <Loader2 size={14} className="animate-spin" />
                   </div>
-                  <div className="px-4 py-3 rounded-2xl text-sm leading-relaxed bg-black/40 text-muted-foreground border border-white/5 rounded-tl-sm animate-pulse flex gap-1 items-center">
-                    Analyzing intent...
+                  <div className="px-5 py-4 rounded-[1.5rem] text-[15px] leading-relaxed bg-[#f3f3f3] text-[#474545] rounded-tl-sm flex gap-2 items-center font-medium">
+                    Processing
                   </div>
                 </div>
               )}
@@ -207,7 +213,7 @@ export default function ChatPanel() {
             {/* Input Form */}
             <form
               onSubmit={handleSubmit}
-              className="p-4 border-t border-white/10 bg-black/60 shrink-0"
+              className="p-6 border-t border-[#e5e5e5] bg-white shrink-0"
             >
               <div className="relative flex items-center">
                 <input
@@ -215,20 +221,20 @@ export default function ChatPanel() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Ask NEXARA AI..."
-                  className="w-full bg-white/5 border border-white/10 rounded-full pl-5 pr-12 py-3.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all placeholder:text-muted-foreground/50"
+                  className="w-full bg-[#f3f3f3] border-none rounded-full pl-6 pr-14 py-4 text-[15px] text-[#1c1b1b] font-medium focus:outline-none focus:ring-2 focus:ring-[#1c1b1b] transition-all placeholder:text-[#474545]/70"
                   disabled={isLoading}
                   autoComplete="off"
                 />
                 <button
                   type="submit"
                   disabled={isLoading || !inputValue.trim()}
-                  className="absolute right-2 w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 disabled:bg-primary/50"
+                  className="absolute right-2 w-10 h-10 rounded-full bg-[#1c1b1b] flex items-center justify-center text-white hover:bg-[#333] active:scale-95 transition-all disabled:opacity-50 disabled:active:scale-100"
                   aria-label="Send message"
                 >
                   {isLoading ? (
-                    <Loader2 size={16} className="animate-spin" />
+                    <Loader2 size={18} className="animate-spin" />
                   ) : (
-                    <Send size={16} className="ml-px" />
+                    <Send size={16} className="ml-0.5" />
                   )}
                 </button>
               </div>
@@ -242,7 +248,7 @@ export default function ChatPanel() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-[0_0_40px_rgba(var(--primary-rgb),0.4)] flex items-center justify-center relative group isolate"
+        className="w-16 h-16 rounded-full bg-[#1c1b1b] text-white shadow-xl flex items-center justify-center group"
         aria-label="Toggle chat panel"
       >
         <AnimatePresence mode="wait">
@@ -266,9 +272,6 @@ export default function ChatPanel() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Glow effect on hover */}
-        <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
       </motion.button>
     </div>
   );

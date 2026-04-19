@@ -18,105 +18,106 @@ export default function FeaturesSection() {
   const ActiveIcon = (Icons as any)[activeData.icon] || Icons.Code;
 
   return (
-    <section id="features" className="section-container relative z-10 py-32">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
-          NEXARA Engineering
-        </h2>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          Every vehicle is built on a foundation of uncompromising safety,
-          boundary-pushing technology, and sustainable luxury.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Sidebar Nav */}
-        <div className="lg:col-span-4 flex flex-col gap-2">
-          {brandFeatures.map((feature) => {
-            const Icon = (Icons as any)[feature.icon] || Icons.Circle;
-            const isActive = feature.id === activeFeatureId;
-
-            return (
-              <button
-                key={feature.id}
-                onClick={() => setActiveFeatureId(feature.id)}
-                className={`group flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 text-left ${
-                  isActive
-                    ? "bg-primary/10 border border-primary/20 shadow-lg shadow-primary/5"
-                    : "bg-white/5 border border-transparent hover:bg-white/10 hover:border-white/10"
-                }`}
-              >
-                <div
-                  className={`p-3 rounded-xl transition-colors ${
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-background text-muted-foreground group-hover:text-foreground"
-                  }`}
-                >
-                  <Icon size={20} />
-                </div>
-                <div>
-                  <div
-                    className={`font-semibold text-base transition-colors ${isActive ? "text-primary" : "text-foreground"}`}
-                  >
-                    {feature.category}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                    {feature.title}
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+    <section id="features" className="py-32 px-6 bg-[#f3f3f3]">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-16">
+          <h2 className="text-5xl md:text-6xl font-heading font-bold text-[#1c1b1b] mb-6 tracking-tight">
+            NEXARA Engineering
+          </h2>
+          <p className="text-[#474545] text-xl max-w-2xl font-medium leading-relaxed">
+            Every vehicle is built on a foundation of uncompromising safety,
+            boundary-pushing technology, and sustainable luxury.
+          </p>
         </div>
 
-        {/* Content Display */}
-        <div className="lg:col-span-8 glass border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden min-h-100 flex flex-col justify-center">
-          {/* Subtle radial background glow based on active feature */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Sidebar Nav */}
+          <div className="lg:col-span-4 flex flex-col gap-3">
+            {brandFeatures.map((feature) => {
+              const Icon = (Icons as any)[feature.icon] || Icons.Circle;
+              const isActive = feature.id === activeFeatureId;
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeData.id}
-              initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="relative z-10"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-4 rounded-2xl bg-primary/20 text-primary border border-primary/20">
-                  <ActiveIcon size={32} />
-                </div>
-                <h3 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
-                  {activeData.title}
-                </h3>
-              </div>
-
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-2xl">
-                {activeData.description}
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-                {activeData.details.map((detail, idx) => (
-                  <motion.div
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 + idx * 0.05 }}
-                    key={idx}
-                    className="flex items-start gap-3"
+              return (
+                <button
+                  key={feature.id}
+                  onClick={() => setActiveFeatureId(feature.id)}
+                  className={`group flex items-center gap-5 p-5 rounded-[1.5rem] transition-all duration-300 text-left ${
+                    isActive
+                      ? "bg-[#1c1b1b] text-white"
+                      : "bg-white border border-[#e5e5e5] hover:bg-[#e5e5e5]/50"
+                  }`}
+                >
+                  <div
+                    className={`p-3 rounded-full transition-colors ${
+                      isActive
+                        ? "bg-white text-[#1c1b1b]"
+                        : "bg-[#f3f3f3] text-[#1c1b1b]"
+                    }`}
                   >
-                    <div className="mt-1 shrink-0 text-primary">
-                      <Icons.CheckCircle2 size={18} />
+                    <Icon size={20} />
+                  </div>
+                  <div>
+                    <div
+                      className={`font-bold text-lg transition-colors ${isActive ? "text-white" : "text-[#1c1b1b]"}`}
+                    >
+                      {feature.category}
                     </div>
-                    <span className="text-sm font-medium text-foreground/80 leading-snug">
-                      {detail}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                    <div
+                      className={`text-sm mt-1 font-medium line-clamp-1 ${isActive ? "text-white/70" : "text-[#474545]"}`}
+                    >
+                      {feature.title}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Content Display */}
+          <div className="lg:col-span-8 bg-white border border-[#e5e5e5] rounded-[2rem] p-10 md:p-16 relative overflow-hidden min-h-125 flex flex-col justify-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeData.id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="relative z-10"
+              >
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="p-5 rounded-full bg-[#f3f3f3] text-[#1c1b1b]">
+                    <ActiveIcon size={36} />
+                  </div>
+                  <h3 className="text-4xl md:text-5xl font-heading font-bold text-[#1c1b1b] tracking-tight">
+                    {activeData.title}
+                  </h3>
+                </div>
+
+                <p className="text-xl text-[#474545] font-medium leading-relaxed mb-12 max-w-3xl">
+                  {activeData.description}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
+                  {activeData.details.map((detail, idx) => (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 + idx * 0.05 }}
+                      key={idx}
+                      className="flex items-start gap-4"
+                    >
+                      <div className="mt-1 shrink-0 text-[#1c1b1b]">
+                        <Icons.CheckCircle2 size={24} />
+                      </div>
+                      <span className="text-lg font-semibold text-[#1c1b1b] leading-snug">
+                        {detail}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>
