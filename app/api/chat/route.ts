@@ -1,6 +1,8 @@
 import { groq } from "@ai-sdk/groq";
 import { streamText, tool, convertToModelMessages } from "ai";
 import { z } from "zod";
+import { cars } from "@/data/cars";
+import { brandFeatures } from "@/data/features";
 
 export const maxDuration = 30;
 
@@ -15,7 +17,6 @@ export async function POST(req: Request) {
           p.type === "tool-call" ||
           p.type === "tool-invocation",
       );
-
       if (toolPart) {
         const payload = toolPart.args || toolPart.input;
         return {
@@ -31,18 +32,39 @@ export async function POST(req: Request) {
 
   const modelMessages = await convertToModelMessages(sanitizedMessages);
 
+  // actual database context into the LLM
+  const carContext = cars
+    .map(
+      (c) =>
+        `- ${c.name} (ID: '${c.id}', Price: ₹${c.priceINR}, Flagship: ${c.isFlagship})`,
+    )
+    .join("\n");
+  const featureContext = brandFeatures
+    .map((f) => `- ${f.title} (ID: '${f.id}', Category: ${f.category})`)
+    .join("\n");
+
   const result = streamText({
     model: groq("llama-3.3-70b-versatile"),
     messages: modelMessages,
-    system: `You are the AI navigation assistant for NEXARA Motors, a premium electric vehicle dealership.
-Your job is to understand the user's intent and ALWAYS trigger the 'navigate_and_mutate' tool to scroll the page, change content appropriately, and provide a short, natural language reply.
-You must handle at least the following intents:
-- Finding cars within budget or by type (filter_models, section: models)
-- Comparing two specific cars (compare_models, section: comparison)
-- Test drive booking (prefill_booking, section: booking)
-- Asking for a recommendation (highlight_model, section: models)
-- Showing prices in a different currency (change_currency, section: pricing)
-- Showing specific features like safety, tech (show_feature, section: features)
+    system: `You are the AI navigation assistant for NEXARA Motors.
+Your job is to understand the user's intent and ALWAYS trigger the 'navigate_and_mutate' tool.
+
+--- DATABASE CONTEXT ---
+Cars Available:
+${carContext}
+
+Features Available:
+${featureContext}
+
+Supported Currencies: INR, USD, EUR, GBP
+------------------------
+
+CRITICAL INSTRUCTIONS:
+- Finding cars: Use 'filter_models'.
+- Comparing: Use 'compare_models' with EXACT car IDs from above. (e.g., to find the cheapest car, look at the prices in the context above).
+- Test drive: Use 'prefill_booking'.
+- Features (screens, speakers, etc.): Use 'show_feature' with EXACT feature IDs from above (e.g., 'technology' or 'comfort').
+- Currencies: Use 'change_currency'. If a user asks for an UNSUPPORTED currency (like Japanese Yen), use the 'reset' mutation and politely explain in your 'reply' string that only INR, USD, EUR, and GBP are supported.
 
 Never return a raw text response to the user. You MUST always call the navigate_and_mutate tool.`,
     tools: {
